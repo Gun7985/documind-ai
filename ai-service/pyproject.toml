@@ -1,0 +1,9 @@
+[project]
+name = "documind-ai-service"
+version = "0.1.0"
+description = "Internal PDF extraction and AI analysis service bootstrap"
+requires-python = ">=3.13,<3.14"
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
