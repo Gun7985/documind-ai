@@ -26,5 +26,9 @@
 
 - [MVP 요구사항](docs/requirements/MVP.md)
 - [아키텍처 개요](docs/architecture/OVERVIEW.md)
+- [데이터 모델 및 ERD](docs/architecture/ERD.md)
+- [인증 및 보안 설계](docs/architecture/SECURITY.md)
+- [AI 분석 파이프라인](docs/architecture/AI_PIPELINE.md)
+- [OpenAPI 3.1 명세](docs/api/openapi.yaml)
 - [배포 검증 및 종료 체크리스트](docs/deployment/VERIFICATION_AND_SHUTDOWN.md)
 - [저장소 작업 지침](AGENTS.md)
