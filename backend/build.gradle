@@ -20,12 +20,46 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-database-postgresql'
+	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-actuator-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+sourceSets {
+	databaseIntegrationTest {
+		java.srcDir file('src/databaseIntegrationTest/java')
+		resources.srcDir file('src/databaseIntegrationTest/resources')
+		compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
+		runtimeClasspath += output + compileClasspath
+	}
+}
+
+configurations {
+	databaseIntegrationTestImplementation.extendsFrom testImplementation
+	databaseIntegrationTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.register('databaseIntegrationTest', Test) {
+	description = 'Runs PostgreSQL migration, integrity, role, and RLS integration tests.'
+	group = 'verification'
+	testClassesDirs = sourceSets.databaseIntegrationTest.output.classesDirs
+	classpath = sourceSets.databaseIntegrationTest.runtimeClasspath
+	useJUnitPlatform()
+	shouldRunAfter tasks.named('test')
+}
+
+tasks.named('check') {
+	dependsOn tasks.named('databaseIntegrationTest')
 }

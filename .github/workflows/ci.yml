@@ -30,6 +30,24 @@ jobs:
   backend:
     name: Backend
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: documind_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d documind_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      TEST_DATABASE_URL: jdbc:postgresql://localhost:5432/documind_test
+      TEST_DATABASE_USERNAME: postgres
+      TEST_DATABASE_PASSWORD: postgres
     defaults:
       run:
         working-directory: backend
@@ -41,7 +59,10 @@ jobs:
           java-version: '17'
           cache: gradle
       - run: chmod +x gradlew
-      - run: ./gradlew test --no-daemon
+      - name: Run Spring Security unit tests
+        run: ./gradlew test --no-daemon
+      - name: Run required PostgreSQL integrity and RLS tests
+        run: ./gradlew databaseIntegrationTest --no-daemon
 
   ai-service:
     name: AI Service

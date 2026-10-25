@@ -78,3 +78,4 @@ macOS/Linux에서는 가상환경 실행 파일 경로로 `.venv/bin/python`을 
 - [OpenAPI 3.1 명세](docs/api/openapi.yaml)
 - [배포 검증 및 종료 체크리스트](docs/deployment/VERIFICATION_AND_SHUTDOWN.md)
 - [저장소 작업 지침](AGENTS.md)
+- [인증 및 데이터베이스 개발 환경](docs/development/AUTH_DATABASE.md)
